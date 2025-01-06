@@ -244,6 +244,8 @@ button :hover {
                 <button id="edit-button">Edit Resume</button>
                     <button id="print-button">Print Resume</button>
                     <button id="download-button">Download Resume</button>
+                    <button id="share-button">Share Resume</button>
+
             </body>
         </html>
     `;
@@ -309,6 +311,44 @@ if (downloadButton) {
 }
 
     };
+
+    
+    const shareButton = newWindow.document.getElementById("share-button");
+    if (shareButton) {
+        shareButton.addEventListener("click", () => {
+            // Create a Blob from the generated resume HTML content
+            const resumeClone = newWindow.document.documentElement.cloneNode(true) as HTMLElement;
+    
+            // Remove the buttons from the cloned content (optional)
+            const buttons = resumeClone.querySelectorAll("button") as NodeListOf<HTMLElement>;
+            buttons.forEach((button) => button.remove());
+    
+            // Serialize the modified HTML content
+            const serializer = new XMLSerializer();
+            const resumeHTMLWithoutButtons = serializer.serializeToString(resumeClone);
+    
+            // Create a Blob with the HTML content
+            const blob = new Blob([resumeHTMLWithoutButtons], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+    
+            // You can now generate a link to this blob URL
+            const shareableLink = url; // This is the link you will share
+    
+            // Display the link to the user in the new window
+            newWindow.alert(`Your shareable link: ${shareableLink}`);
+    
+            // Optionally, open the link in a new tab
+            // newWindow.open(shareableLink, "_blank");
+    
+            // Now you can share this URL with others
+            console.log('Generated Shareable Link:', shareableLink);
+        });
+    }
+    
+
+
+
+
 
 
 } else {
